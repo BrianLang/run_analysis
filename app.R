@@ -41,7 +41,7 @@ server <- function(input, output) {
     ## user input file will be NULL to begin with, so use the example to start with, this will be shipped with the shiny app when uploaded to rstudio.io
     fit_file <- reactive({
         if (is.null(input$file1)) {
-            fit::read.fit("./data/example.fit")
+            fit::read.fit("./data/example2.fit")
         } else {
             fit::read.fit(input$file1$datapath)
         }
