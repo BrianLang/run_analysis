@@ -1,5 +1,4 @@
-library(xml2)
-
+# library(xml2)
 #
 # gpx_data <- xml2::read_xml("~/Downloads/2331687206243155 (1)_2018_07_29_12_56_55.gpx")
 #
@@ -121,9 +120,11 @@ plot_gg(together_plot,
         max_error = .0001, # when this is big you have higher quality (faster)
         sunangle = 70)  # change this to change the
 
-Sys.sleep(.2)
-render_snapshot("samplemap.png", clear = TRUE)
 
-plot_obj <- magick::image_read("samplemap.png")
-plot_obj <- magick::image_modulate(plot_obj, brightness = 115)
-magick::image_write(plot_obj, path = "samplemap.png")
+
+Sys.sleep(.2)
+render_snapshot("samplemap.png", clear = TRUE) # save the image
+
+plot_obj <- magick::image_read("samplemap.png") # read in the image
+plot_obj <- magick::image_modulate(plot_obj, brightness = 115) # brighten it up since it's pretty dark!
+magick::image_write(plot_obj, path = "samplemap.png") # save the image
