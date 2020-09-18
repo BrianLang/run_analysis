@@ -80,6 +80,8 @@ library(magick)
 library(ggmap)
 library(rayshader)
 
+track_tibble %>% filter(pace > 2) %>% select(lon, lat, ele) %>% rowid_to_column() %>% mutate(new_ele = round(ele / max(ele) * .5,2), lat2 = lat + new_ele)  %>% mutate(groups = as.ordered(cut_number(ele, 20, labels = FALSE))) %>% mutate(change = as.ordered(cumsum(groups != lag(groups, default = as.factor("1"))))) %>% ggplot(aes(lon, lag(lat))) + geom_ribbon(aes(ymin = lat , ymax = lat2 + .01 , x = lead(lon + .01)), size = 1) + geom_ribbon(aes(ymin = lat, ymax = lat2, x = lon, fill = groups, group = change), size = 1, show.legend = FALSE)  + theme_void() + scale_color_viridis_c()
+
 
 glimpse(downsample_track)
 
@@ -107,17 +109,17 @@ point_plot <- ggmap(track_map) +
 
 # plot_gg(list(point_plot, together_plot), # this line and the next could be swapped to have a base layer.
 plot_gg(together_plot,
-        multicore = TRUE, # tells the computer to render using more cores.
-        width = 5, # 5 inches
-        height = 5,
-        scale = 150, # adjusts the height of your textures. base is 150 for some reason
+        multicore = FALSE, # tells the computer to render using more cores.
+        width = 17, # 5 inches
+        height = 18,
+        scale = 200, # adjusts the height of your textures. base is 150 for some reason
         theta = 0, # this means you'll look at it straight-on
         phi = 60, # this adjusts the tilt (forwards and back)
-        windowsize = c(1000,1000),
-        reduce_size = c(1, 1), # if you make these smaller than 1 the quality goes down and it renders faster
-        zoom = .6, # the smaller this is, the more zoomed-in it is.
-        triangulate = TRUE, # when this is TRUE you have lower quality (faster)
-        max_error = .0001, # when this is big you have higher quality (faster)
+        windowsize = c(1920,1080),
+        reduce_size = c(1,1), # if you make these smaller than 1 the quality goes down and it renders faster
+        zoom = .45, # the smaller this is, the more zoomed-in it is.
+        triangulate = FALSE, # when this is TRUE you have lower quality (faster)
+        max_error = .00001, # when this is big you have higher quality (faster)
         sunangle = 70)  # change this to change the
 
 
